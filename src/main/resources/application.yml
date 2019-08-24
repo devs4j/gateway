@@ -1,0 +1,45 @@
+server:
+  port: 8080
+        
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+        
+spring:
+  autoconfigure:
+    # TODO: remove when fixed https://github.com/spring-projects/spring-security/issues/6314
+    exclude: org.springframework.boot.actuate.autoconfigure.security.reactive.ReactiveManagementWebSecurityAutoConfiguration
+  cloud:
+    gateway:
+      discovery.locator:
+        enabled: true
+        lowerCaseServiceId: true
+      routes:
+      - id: devs4j_route
+        uri: https://devs4j.com
+        predicates:
+        - Path=/devs4j
+        filters:
+        - SetPath=/
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            clientId: 1075059109944-69tgnpsthdmoqbtkp1hj1kfae263th1p.apps.googleusercontent.com
+            clientSecret: 
+            
+
+hystrix.command.devs4jCommand.execution.isolation.thread.timeoutInMilliseconds: 500       
+        
+eureka.instance.preferIpAddress: true
+eureka.client.registerWithEureka: true
+eureka.client.fetchRegistry: true
+eureka.client.serviceUrl.defaultZone: http://localhost:8761/eureka
+
+logging:
+  level:
+    org.springframework.cloud.gateway: TRACE
+        
